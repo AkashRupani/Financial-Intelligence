@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardPage from "../features/dashboard/DashboardPage";
+import UploadStatementPage from "../pages/UploadStatementPage";
 // import TransactionsPage from "../features/transactions/TransactionsPage";
 // import AnalyticsPage from "../features/analytics/AnalyticsPage";
 
@@ -19,6 +20,7 @@ return (
 
         {/* Redirect unknown routes */}
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/upload" element={<UploadStatementPage />} />
     </Routes>
     </BrowserRouter>
 );

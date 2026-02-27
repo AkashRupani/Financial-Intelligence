@@ -1,27 +1,49 @@
-import DashboardLayout from "../../layouts/DashboardsLayout";
-import SummaryCards from "../dashboard/components/SummaryCards"
-import SpendingPieChart from "./components/SpendingPieChart"
-import InsightPanel from "../dashboard/components/InsightPanel"
-import MonthlyTrendChart from "../dashboard/components/MonthlyTrendChart"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchDashboardData } from "../../services/dashboardService";
+import SummaryCards from "./components/SummaryCards";
+import SpendingPieChart from "./components/SpendingPieChart";
+import MonthlyTrendChart from "./components/MonthlyTrendChart";
+import InsightPanel from "./components/InsightPanel";
+import DashboardLayout from "../../layouts/DashboardLayout";
 
 const DashboardPage = () => {
-const [summary, setSummary] = useState(null);
-const [categoryData, setCategoryData] = useState([]);
-const [monthlyTrend, setMonthlyTrend] = useState([]);
-const [insights, setInsights] = useState([]);
-const [loading, setLoading] = useState(true);
-    return(
-        <DashboardLayout title="Dashboard">
-            <SummaryCards />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                <SpendingPieChart />
-                <MonthlyTrendChart />
-            </div>
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-            <InsightPanel />
+    useEffect(() => {
+        const loadDashboardData = async () =>{
+            try{
+                const dashboarddata = await fetchDashboardData();
+                setData(dashboarddata);
+            } catch(error){
+                console.error("Error loading data")
+            } finally{
+                setLoading(false);
+            }
+        }
+        loadDashboardData();
+    }, []);
+
+    if (loading) {
+        return <p className="p-6">Loading dashboard…</p>;
+    }
+
+    if (!data) {
+        return <p className="p-6">No data available</p>;
+    }
+
+    return (
+        <DashboardLayout title="Dashboard">
+        <SummaryCards summary={data.summary} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <SpendingPieChart data={data.categoryBreakdown} />
+            <MonthlyTrendChart data={data.monthlyTrend} />
+        </div>
+
+        <InsightPanel insights={data.insights} />
         </DashboardLayout>
-    )
-}
+    );
+};
+
 export default DashboardPage;

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const navItems = [
 { label: "Dashboard", path: "/" },
@@ -6,7 +6,8 @@ const navItems = [
 { label: "Analytics", path: "/analytics" },
 { label: "Goals", path: "/goals" },
 { label: "Subscriptions", path: "/subscriptions" },
-{ label: "Alerts", path: "/alerts" }
+{ label: "Alerts", path: "/alerts" },
+{ label: "Upload Statement", path: "/upload" }
 ];
 
 const Sidebar = () => {
