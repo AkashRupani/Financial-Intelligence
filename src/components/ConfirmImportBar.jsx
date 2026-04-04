@@ -1,17 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { confirmCsvImport } from "../services/uploadService";
+import { learnVendorMappings } from "../services/vendorService";
 
 const ConfirmImportBar = ({ transactions, onSuccess }) => {
     const navigate = useNavigate();
 
     const handleConfirm = async () => {
-        try {
-        await confirmCsvImport(transactions);
-        navigate("/");
-        } catch (err) {
-        alert("Failed to save transactions");
-        }
-    };
+
+  await confirmCsvImport(transactions);
+
+  await learnVendorMappings(transactions);
+
+  navigate("/");
+};
 
     return (
         <div className="mt-4 flex justify-between items-center bg-gray-50 p-3 border">
